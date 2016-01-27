@@ -1,51 +1,42 @@
-(function webpackUniversalModuleDefinition(root, factory) {
-	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("React"));
-	else if(typeof define === 'function' && define.amd)
-		define(["React"], factory);
-	else if(typeof exports === 'object')
-		exports["ReactAutocomplete"] = factory(require("React"));
-	else
-		root["ReactAutocomplete"] = factory(root["React"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_2__) {
-return /******/ (function(modules) { // webpackBootstrap
+module.exports =
+/******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-/******/
+
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
-/******/
+
 /******/ 		// Check if module is in cache
 /******/ 		if(installedModules[moduleId])
 /******/ 			return installedModules[moduleId].exports;
-/******/
+
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			exports: {},
 /******/ 			id: moduleId,
 /******/ 			loaded: false
 /******/ 		};
-/******/
+
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
+
 /******/ 		// Flag the module as loaded
 /******/ 		module.loaded = true;
-/******/
+
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/
-/******/
+
+
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-/******/
+
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-/******/
+
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
-/******/
+
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
 /******/ })
@@ -55,33 +46,17 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	
-	module.exports = __webpack_require__(1);
 
-/***/ },
-/* 1 */
-/***/ function(module, exports, __webpack_require__) {
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	'use strict';
-	
-	var _extends = Object.assign || function (target) {
-	  for (var i = 1; i < arguments.length; i++) {
-	    var source = arguments[i];for (var key in source) {
-	      if (Object.prototype.hasOwnProperty.call(source, key)) {
-	        target[key] = source[key];
-	      }
-	    }
-	  }return target;
-	};
-	
-	var React = __webpack_require__(2);
-	var scrollIntoView = __webpack_require__(3);
-	
+	var React = __webpack_require__(1);
+	var scrollIntoView = __webpack_require__(2);
+
 	var _debugStates = [];
-	
+
 	var Autocomplete = React.createClass({
 	  displayName: 'Autocomplete',
-	
+
 	  propTypes: {
 	    initialValue: React.PropTypes.any,
 	    onChange: React.PropTypes.func,
@@ -89,9 +64,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    shouldItemRender: React.PropTypes.func,
 	    renderItem: React.PropTypes.func.isRequired,
 	    menuStyle: React.PropTypes.object,
-	    inputProps: React.PropTypes.object
+	    inputProps: React.PropTypes.object,
+	    isComplete: React.PropTypes.bool
 	  },
-	
+
 	  getDefaultProps: function getDefaultProps() {
 	    return {
 	      inputProps: {},
@@ -114,7 +90,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        maxHeight: '50%' }
 	    };
 	  },
-	
+
 	  // TODO: don't cheat, let it flow to the bottom
 	  getInitialState: function getInitialState() {
 	    return {
@@ -123,36 +99,38 @@ return /******/ (function(modules) { // webpackBootstrap
 	      highlightedIndex: null
 	    };
 	  },
-	
+
 	  componentWillMount: function componentWillMount() {
 	    this._ignoreBlur = false;
 	    this._performAutoCompleteOnUpdate = false;
 	    this._performAutoCompleteOnKeyUp = false;
 	  },
-	
+
 	  componentWillReceiveProps: function componentWillReceiveProps() {
 	    this._performAutoCompleteOnUpdate = true;
 	  },
-	
+
 	  componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
 	    if (this.state.isOpen === true && prevState.isOpen === false) this.setMenuPositions();
-	
+
 	    if (this.state.isOpen && this._performAutoCompleteOnUpdate) {
 	      this._performAutoCompleteOnUpdate = false;
-	      this.maybeAutoCompleteText();
+	      if (this.props.isComplete) {
+	        this.maybeAutoCompleteText();
+	      }
 	    }
-	
+
 	    this.maybeScrollItemIntoView();
 	  },
-	
+
 	  maybeScrollItemIntoView: function maybeScrollItemIntoView() {
 	    if (this.state.isOpen === true && this.state.highlightedIndex !== null) {
-	      var itemNode = React.findDOMNode(this.refs['item-' + this.state.highlightedIndex]);
-	      var menuNode = React.findDOMNode(this.refs.menu);
+	      var itemNode = this.refs['item-' + this.state.highlightedIndex];
+	      var menuNode = this.refs.menu;
 	      scrollIntoView(itemNode, menuNode, { onlyScrollIfNeeded: true });
 	    }
 	  },
-	
+
 	  handleKeyDown: function handleKeyDown(event) {
 	    if (this.keyDownHandlers[event.key]) this.keyDownHandlers[event.key].call(this, event);else {
 	      this.setState({
@@ -161,10 +139,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      });
 	    }
 	  },
-	
+
 	  handleChange: function handleChange(event) {
 	    var _this = this;
-	
+
 	    this._performAutoCompleteOnKeyUp = true;
 	    this.setState({
 	      value: event.target.value
@@ -172,19 +150,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	      _this.props.onChange(event, _this.state.value);
 	    });
 	  },
-	
+
 	  handleKeyUp: function handleKeyUp() {
 	    if (this._performAutoCompleteOnKeyUp) {
 	      this._performAutoCompleteOnKeyUp = false;
 	      this.maybeAutoCompleteText();
 	    }
 	  },
-	
+
 	  keyDownHandlers: {
 	    ArrowDown: function ArrowDown() {
 	      event.preventDefault();
 	      var highlightedIndex = this.state.highlightedIndex;
-	
+
 	      var index = highlightedIndex === null || highlightedIndex === this.getFilteredItems().length - 1 ? 0 : highlightedIndex + 1;
 	      this._performAutoCompleteOnKeyUp = true;
 	      this.setState({
@@ -192,11 +170,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        isOpen: true
 	      });
 	    },
-	
+
 	    ArrowUp: function ArrowUp(event) {
 	      event.preventDefault();
 	      var highlightedIndex = this.state.highlightedIndex;
-	
+
 	      var index = highlightedIndex === 0 || highlightedIndex === null ? this.getFilteredItems().length - 1 : highlightedIndex - 1;
 	      this._performAutoCompleteOnKeyUp = true;
 	      this.setState({
@@ -204,34 +182,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	        isOpen: true
 	      });
 	    },
-	
-	    Enter: function Enter(event) {
-	      var _this2 = this;
-	
-	      if (this.state.isOpen === false) {
-	        // already selected this, do nothing
-	        return;
-	      } else if (this.state.highlightedIndex == null) {
-	        // hit enter after focus but before typing anything so no autocomplete attempt yet
-	        this.setState({
-	          isOpen: false
-	        }, function () {
-	          React.findDOMNode(_this2.refs.input).select();
-	        });
-	      } else {
-	        var item = this.getFilteredItems()[this.state.highlightedIndex];
-	        this.setState({
-	          value: this.props.getItemValue(item),
-	          isOpen: false,
-	          highlightedIndex: null
-	        }, function () {
-	          //React.findDOMNode(this.refs.input).focus() // TODO: file issue
-	          React.findDOMNode(_this2.refs.input).setSelectionRange(_this2.state.value.length, _this2.state.value.length);
-	          _this2.props.onSelect(_this2.state.value, item);
-	        });
-	      }
+
+	    ArrowRight: function ArrowRight(event) {
+	      this.selectItemFromKeyEvent(event);
 	    },
-	
+
+	    Enter: function Enter(event) {
+	      this.selectItemFromKeyEvent(event);
+	    },
+
 	    Escape: function Escape(event) {
 	      this.setState({
 	        highlightedIndex: null,
@@ -239,50 +198,50 @@ return /******/ (function(modules) { // webpackBootstrap
 	      });
 	    }
 	  },
-	
+
 	  getFilteredItems: function getFilteredItems() {
-	    var _this3 = this;
-	
+	    var _this2 = this;
+
 	    var items = this.props.items;
-	
+
 	    if (this.props.shouldItemRender) {
 	      items = items.filter(function (item) {
-	        return _this3.props.shouldItemRender(item, _this3.state.value);
+	        return _this2.props.shouldItemRender(item, _this2.state.value);
 	      });
 	    }
-	
+
 	    if (this.props.sortItems) {
 	      items.sort(function (a, b) {
-	        return _this3.props.sortItems(a, b, _this3.state.value);
+	        return _this2.props.sortItems(a, b, _this2.state.value);
 	      });
 	    }
-	
+
 	    return items;
 	  },
-	
+
 	  maybeAutoCompleteText: function maybeAutoCompleteText() {
-	    var _this4 = this;
-	
+	    var _this3 = this;
+
 	    if (this.state.value === '') return;
 	    var highlightedIndex = this.state.highlightedIndex;
-	
+
 	    var items = this.getFilteredItems();
 	    if (items.length === 0) return;
 	    var matchedItem = highlightedIndex !== null ? items[highlightedIndex] : items[0];
 	    var itemValue = this.props.getItemValue(matchedItem);
 	    var itemValueDoesMatch = itemValue.toLowerCase().indexOf(this.state.value.toLowerCase()) === 0;
 	    if (itemValueDoesMatch) {
-	      var node = React.findDOMNode(this.refs.input);
+	      var node = this.refs.input;
 	      var setSelection = function setSelection() {
 	        node.value = itemValue;
-	        node.setSelectionRange(_this4.state.value.length, itemValue.length);
+	        node.setSelectionRange(_this3.state.value.length, itemValue.length);
 	      };
 	      if (highlightedIndex === null) this.setState({ highlightedIndex: 0 }, setSelection);else setSelection();
 	    }
 	  },
-	
+
 	  setMenuPositions: function setMenuPositions() {
-	    var node = React.findDOMNode(this.refs.input);
+	    var node = this.refs.input;
 	    var rect = node.getBoundingClientRect();
 	    var computedStyle = getComputedStyle(node);
 	    var marginBottom = parseInt(computedStyle.marginBottom, 10);
@@ -294,32 +253,59 @@ return /******/ (function(modules) { // webpackBootstrap
 	      menuWidth: rect.width + marginLeft + marginRight
 	    });
 	  },
-	
+
 	  highlightItemFromMouse: function highlightItemFromMouse(index) {
 	    this.setState({ highlightedIndex: index });
 	  },
-	
+
 	  selectItemFromMouse: function selectItemFromMouse(item) {
-	    var _this5 = this;
-	
+	    var _this4 = this;
+
 	    this.setState({
 	      value: this.props.getItemValue(item),
 	      isOpen: false,
 	      highlightedIndex: null
 	    }, function () {
-	      _this5.props.onSelect(_this5.state.value, item);
-	      React.findDOMNode(_this5.refs.input).focus();
-	      _this5.setIgnoreBlur(false);
+	      _this4.props.onSelect(_this4.state.value, item);
+	      _this4.refs.input.focus();
+	      _this4.setIgnoreBlur(false);
 	    });
 	  },
-	
+
+	  selectItemFromKeyEvent: function selectItemFromKeyEvent(event) {
+	    var _this5 = this;
+
+	    if (this.state.isOpen === false) {
+	      // already selected this, do nothing
+	      return;
+	    } else if (this.state.highlightedIndex == null) {
+	      // hit enter after focus but before typing anything so no autocomplete attempt yet
+	      this.setState({
+	        isOpen: false
+	      }, function () {
+	        React.findDOMNode(_this5.refs.input).select();
+	      });
+	    } else {
+	      var item = this.getFilteredItems()[this.state.highlightedIndex];
+	      this.setState({
+	        value: this.props.getItemValue(item),
+	        isOpen: false,
+	        highlightedIndex: null
+	      }, function () {
+	        //React.findDOMNode(this.refs.input).focus() // TODO: file issue
+	        React.findDOMNode(_this5.refs.input).setSelectionRange(_this5.state.value.length, _this5.state.value.length);
+	        _this5.props.onSelect(_this5.state.value, item);
+	      });
+	    }
+	  },
+
 	  setIgnoreBlur: function setIgnoreBlur(ignore) {
 	    this._ignoreBlur = ignore;
 	  },
-	
+
 	  renderMenu: function renderMenu() {
 	    var _this6 = this;
-	
+
 	    var items = this.getFilteredItems().map(function (item, index) {
 	      var element = _this6.props.renderItem(item, _this6.state.highlightedIndex === index, { cursor: 'default' });
 	      return React.cloneElement(element, {
@@ -343,18 +329,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var menu = this.props.renderMenu(items, this.state.value, style);
 	    return React.cloneElement(menu, { ref: 'menu' });
 	  },
-	
-	  getActiveItemValue: function getActiveItemValue() {
-	    if (this.state.highlightedIndex === null) return '';else {
-	      var item = this.props.items[this.state.highlightedIndex];
-	      // items can match when we maybeAutoCompleteText, but then get replaced by the app
-	      // for the next render? I think? TODO: file an issue (alab -> enter -> type 'a' for
-	      // alabamaa and then an error would happen w/o this guard, pretty sure there's a
-	      // better way)
-	      return item ? this.props.getItemValue(item) : '';
-	    }
-	  },
-	
+
 	  handleInputBlur: function handleInputBlur() {
 	    if (this._ignoreBlur) return;
 	    this.setState({
@@ -362,19 +337,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	      highlightedIndex: null
 	    });
 	  },
-	
+
 	  handleInputFocus: function handleInputFocus() {
 	    if (this._ignoreBlur) return;
 	    this.setState({ isOpen: true });
 	  },
-	
+
 	  handleInputClick: function handleInputClick() {
 	    if (this.state.isOpen === false) this.setState({ isOpen: true });
 	  },
-	
+
 	  render: function render() {
 	    var _this7 = this;
-	
+
 	    if (this.props.debug) {
 	      // you don't like it, you love it
 	      _debugStates.push({
@@ -382,63 +357,72 @@ return /******/ (function(modules) { // webpackBootstrap
 	        state: this.state
 	      });
 	    }
-	    return React.createElement('div', { style: { display: 'inline-block' } }, React.createElement('input', _extends({}, this.props.inputProps, {
-	      role: 'combobox',
-	      'aria-autocomplete': 'both',
-	      'aria-label': this.getActiveItemValue(),
-	      ref: 'input',
-	      onFocus: this.handleInputFocus,
-	      onBlur: this.handleInputBlur,
-	      onChange: function onChange(event) {
-	        return _this7.handleChange(event);
-	      },
-	      onKeyDown: function onKeyDown(event) {
-	        return _this7.handleKeyDown(event);
-	      },
-	      onKeyUp: function onKeyUp(event) {
-	        return _this7.handleKeyUp(event);
-	      },
-	      onClick: this.handleInputClick,
-	      value: this.state.value
-	    })), this.state.isOpen && this.renderMenu(), this.props.debug && React.createElement('pre', { style: { marginLeft: 300 } }, JSON.stringify(_debugStates.slice(_debugStates.length - 5, _debugStates.length), null, 2)));
+	    return React.createElement(
+	      'div',
+	      { style: { display: 'inline-block' } },
+	      React.createElement('input', _extends({}, this.props.inputProps, {
+	        role: 'combobox',
+	        'aria-autocomplete': 'both',
+	        ref: 'input',
+	        onFocus: this.handleInputFocus,
+	        onBlur: this.handleInputBlur,
+	        onChange: function (event) {
+	          return _this7.handleChange(event);
+	        },
+	        onKeyDown: function (event) {
+	          return _this7.handleKeyDown(event);
+	        },
+	        onKeyUp: function (event) {
+	          return _this7.handleKeyUp(event);
+	        },
+	        onClick: this.handleInputClick,
+	        value: this.state.value
+	      })),
+	      this.state.isOpen && this.renderMenu(),
+	      this.props.debug && React.createElement(
+	        'pre',
+	        { style: { marginLeft: 300 } },
+	        JSON.stringify(_debugStates.slice(_debugStates.length - 5, _debugStates.length), null, 2)
+	      )
+	    );
 	  }
 	});
-	
+
 	module.exports = Autocomplete;
 
 /***/ },
-/* 2 */
+/* 1 */
 /***/ function(module, exports) {
 
-	module.exports = __WEBPACK_EXTERNAL_MODULE_2__;
+	module.exports = require("react");
+
+/***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(3);
+
 
 /***/ },
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(4);
+	var util = __webpack_require__(4);
 
-
-/***/ },
-/* 4 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var util = __webpack_require__(5);
-	
 	function scrollIntoView(elem, container, config) {
 	  config = config || {};
 	  // document 归一化到 window
 	  if (container.nodeType === 9) {
 	    container = util.getWindow(container);
 	  }
-	
+
 	  var allowHorizontalScroll = config.allowHorizontalScroll;
 	  var onlyScrollIfNeeded = config.onlyScrollIfNeeded;
 	  var alignWithTop = config.alignWithTop;
 	  var alignWithLeft = config.alignWithLeft;
-	
+
 	  allowHorizontalScroll = allowHorizontalScroll === undefined ? true : allowHorizontalScroll;
-	
+
 	  var isWin = util.isWindow(container);
 	  var elemOffset = util.offset(elem);
 	  var eh = util.outerHeight(elem);
@@ -446,7 +430,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var containerOffset, ch, cw, containerScroll,
 	    diffTop, diffBottom, win,
 	    winScroll, ww, wh;
-	
+
 	  if (isWin) {
 	    win = container;
 	    wh = util.height(win);
@@ -490,7 +474,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      (parseFloat(util.css(container, 'borderBottomWidth')) || 0))
 	    };
 	  }
-	
+
 	  if (diffTop.top < 0 || diffBottom.top > 0) {
 	    // 强制向上
 	    if (alignWithTop === true) {
@@ -515,7 +499,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 	  }
-	
+
 	  if (allowHorizontalScroll) {
 	    if (diffTop.left < 0 || diffBottom.left > 0) {
 	      // 强制向上
@@ -543,16 +527,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }
 	}
-	
+
 	module.exports = scrollIntoView;
 
 
 /***/ },
-/* 5 */
+/* 4 */
 /***/ function(module, exports) {
 
 	var RE_NUM = /[\-+]?(?:\d*\.|)\d+(?:[eE][\-+]?\d+|)/.source;
-	
+
 	function getClientPosition(elem) {
 	  var box, x, y;
 	  var doc = elem.ownerDocument;
@@ -560,26 +544,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var docElem = doc && doc.documentElement;
 	  // 根据 GBS 最新数据，A-Grade Browsers 都已支持 getBoundingClientRect 方法，不用再考虑传统的实现方式
 	  box = elem.getBoundingClientRect();
-	
+
 	  // 注：jQuery 还考虑减去 docElem.clientLeft/clientTop
 	  // 但测试发现，这样反而会导致当 html 和 body 有边距/边框样式时，获取的值不正确
 	  // 此外，ie6 会忽略 html 的 margin 值，幸运地是没有谁会去设置 html 的 margin
-	
+
 	  x = box.left;
 	  y = box.top;
-	
+
 	  // In IE, most of the time, 2 extra pixels are added to the top and left
 	  // due to the implicit 2-pixel inset border.  In IE6/7 quirks mode and
 	  // IE6 standards mode, this border can be overridden by setting the
 	  // document element's border to zero -- thus, we cannot rely on the
 	  // offset always being 2 pixels.
-	
+
 	  // In quirks mode, the offset can be determined by querying the body's
 	  // clientLeft/clientTop, but in standards mode, it is found by querying
 	  // the document element's clientLeft/clientTop.  Since we already called
 	  // getClientBoundingRect we have already forced a reflow, so it is not
 	  // too expensive just to query them all.
-	
+
 	  // ie 下应该减去窗口的边框吧，毕竟默认 absolute 都是相对窗口定位的
 	  // 窗口边框标准是设 documentElement ,quirks 时设置 body
 	  // 最好禁止在 body 和 html 上边框 ，但 ie < 9 html 默认有 2px ，减去
@@ -587,13 +571,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // 标准 ie 下 docElem.clientTop 就是 border-top
 	  // ie7 html 即窗口边框改变不了。永远为 2
 	  // 但标准 firefox/chrome/ie9 下 docElem.clientTop 是窗口边框，即使设了 border-top 也为 0
-	
+
 	  x -= docElem.clientLeft || body.clientLeft || 0;
 	  y -= docElem.clientTop || body.clientTop || 0;
-	
+
 	  return {left: x, top: y};
 	}
-	
+
 	function getScroll(w, top) {
 	  var ret = w['page' + (top ? 'Y' : 'X') + 'Offset'];
 	  var method = 'scroll' + (top ? 'Top' : 'Left');
@@ -608,15 +592,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	  return ret;
 	}
-	
+
 	function getScrollLeft(w) {
 	  return getScroll(w);
 	}
-	
+
 	function getScrollTop(w) {
 	  return getScroll(w, true);
 	}
-	
+
 	function getOffset(el) {
 	  var pos = getClientPosition(el);
 	  var doc = el.ownerDocument;
@@ -628,32 +612,32 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _getComputedStyle(elem, name, computedStyle) {
 	  var val = '';
 	  var d = elem.ownerDocument;
-	
+
 	  // https://github.com/kissyteam/kissy/issues/61
 	  if ((computedStyle = (computedStyle || d.defaultView.getComputedStyle(elem, null)))) {
 	    val = computedStyle.getPropertyValue(name) || computedStyle[name];
 	  }
-	
+
 	  return val;
 	}
-	
+
 	var _RE_NUM_NO_PX = new RegExp('^(' + RE_NUM + ')(?!px)[a-z%]+$', 'i');
 	var RE_POS = /^(top|right|bottom|left)$/,
 	  CURRENT_STYLE = 'currentStyle',
 	  RUNTIME_STYLE = 'runtimeStyle',
 	  LEFT = 'left',
 	  PX = 'px';
-	
+
 	function _getComputedStyleIE(elem, name) {
 	  // currentStyle maybe null
 	  // http://msdn.microsoft.com/en-us/library/ms535231.aspx
 	  var ret = elem[CURRENT_STYLE] && elem[CURRENT_STYLE][name];
-	
+
 	  // 当 width/height 设置为百分比时，通过 pixelLeft 方式转换的 width/height 值
 	  // 一开始就处理了! CUSTOM_STYLE.height,CUSTOM_STYLE.width ,cssHook 解决@2011-08-19
 	  // 在 ie 下不对，需要直接用 offset 方式
 	  // borderWidth 等值也有问题，但考虑到 borderWidth 设为百分比的概率很小，这里就不考虑了
-	
+
 	  // From the awesome hack by Dean Edwards
 	  // http://erik.eae.net/archives/2007/07/27/18.54.15/#comment-102291
 	  // If we're not dealing with a regular pixel number
@@ -664,80 +648,80 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var style = elem.style,
 	      left = style[LEFT],
 	      rsLeft = elem[RUNTIME_STYLE][LEFT];
-	
+
 	    // prevent flashing of content
 	    elem[RUNTIME_STYLE][LEFT] = elem[CURRENT_STYLE][LEFT];
-	
+
 	    // Put in the new values to get a computed value out
 	    style[LEFT] = name === 'fontSize' ? '1em' : (ret || 0);
 	    ret = style.pixelLeft + PX;
-	
+
 	    // Revert the changed values
 	    style[LEFT] = left;
-	
+
 	    elem[RUNTIME_STYLE][LEFT] = rsLeft;
 	  }
 	  return ret === '' ? 'auto' : ret;
 	}
-	
+
 	var getComputedStyleX;
 	if (typeof window !== 'undefined') {
 	  getComputedStyleX = window.getComputedStyle ? _getComputedStyle : _getComputedStyleIE;
 	}
-	
+
 	// 设置 elem 相对 elem.ownerDocument 的坐标
 	function setOffset(elem, offset) {
 	  // set position first, in-case top/left are set even on static elem
 	  if (css(elem, 'position') === 'static') {
 	    elem.style.position = 'relative';
 	  }
-	
+
 	  var old = getOffset(elem),
 	    ret = {},
 	    current, key;
-	
+
 	  for (key in offset) {
 	    current = parseFloat(css(elem, key)) || 0;
 	    ret[key] = current + offset[key] - old[key];
 	  }
 	  css(elem, ret);
 	}
-	
+
 	function each(arr, fn) {
 	  for (var i = 0; i < arr.length; i++) {
 	    fn(arr[i]);
 	  }
 	}
-	
+
 	function isBorderBoxFn(elem) {
 	  return getComputedStyleX(elem, 'boxSizing') === 'border-box';
 	}
-	
+
 	var BOX_MODELS = ['margin', 'border', 'padding'],
 	  CONTENT_INDEX = -1,
 	  PADDING_INDEX = 2,
 	  BORDER_INDEX = 1,
 	  MARGIN_INDEX = 0;
-	
+
 	function swap(elem, options, callback) {
 	  var old = {},
 	    style = elem.style,
 	    name;
-	
+
 	  // Remember the old values, and insert the new ones
 	  for (name in options) {
 	    old[name] = style[name];
 	    style[name] = options[name];
 	  }
-	
+
 	  callback.call(elem);
-	
+
 	  // Revert the old values
 	  for (name in options) {
 	    style[name] = old[name];
 	  }
 	}
-	
+
 	function getPBMWidth(elem, props, which) {
 	  var value = 0, prop, j, i;
 	  for (j = 0; j < props.length; j++) {
@@ -756,7 +740,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	  return value;
 	}
-	
+
 	/**
 	 * A crude way of determining if an object is a window
 	 * @member util
@@ -766,9 +750,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  /*jshint eqeqeq:false*/
 	  return obj != null && obj == obj.window;
 	}
-	
+
 	var domUtils = {};
-	
+
 	each(['Width', 'Height'], function (name) {
 	  domUtils['doc' + name] = function (refWin) {
 	    var d = refWin.document;
@@ -780,7 +764,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      d.body['scroll' + name],
 	      domUtils['viewport' + name](d));
 	  };
-	
+
 	  domUtils['viewport' + name] = function (win) {
 	    // pc browser includes scrollbar in window.innerWidth
 	    var prop = 'client' + name,
@@ -794,7 +778,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      body && body[prop] || documentElementProp;
 	  };
 	});
-	
+
 	/*
 	 得到元素的大小信息
 	 @param elem
@@ -846,9 +830,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        which, computedStyle);
 	  }
 	}
-	
+
 	var cssShow = {position: 'absolute', visibility: 'hidden', display: 'block'};
-	
+
 	// fix #119 : https://github.com/kissyteam/kissy/issues/119
 	function getWHIgnoreDisplay(elem) {
 	  var val, args = arguments;
@@ -863,14 +847,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	  return val;
 	}
-	
+
 	each(['width', 'height'], function (name) {
 	  var first = name.charAt(0).toUpperCase() + name.slice(1);
 	  domUtils['outer' + first] = function (el, includeMargin) {
 	    return el && getWHIgnoreDisplay(el, name, includeMargin ? MARGIN_INDEX : BORDER_INDEX);
 	  };
 	  var which = name === 'width' ? ['Left', 'Right'] : ['Top', 'Bottom'];
-	
+
 	  domUtils[name] = function (elem, val) {
 	    if (val !== undefined) {
 	      if (elem) {
@@ -886,7 +870,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return elem && getWHIgnoreDisplay(elem, name, CONTENT_INDEX);
 	  };
 	});
-	
+
 	function css(el, name, value) {
 	  if (typeof name === 'object') {
 	    for (var i in name) {
@@ -903,14 +887,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return getComputedStyleX(el, name);
 	  }
 	}
-	
+
 	function mix(to, from) {
 	  for (var i in from) {
 	    to[i] = from[i];
 	  }
 	  return to;
 	}
-	
+
 	var utils = module.exports = {
 	  getWindow: function (node) {
 	    var doc = node.ownerDocument || node;
@@ -980,12 +964,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  viewportWidth: 0,
 	  viewportHeight: 0
 	};
-	
+
 	mix(utils, domUtils);
 
 
 /***/ }
-/******/ ])
-});
-;
-//# sourceMappingURL=react-autocomplete.js.map
+/******/ ]);
