@@ -31,9 +31,11 @@
     "a11y"
   ],
   "keywords": [],
-  "dependencies": {
-    "dom-scroll-into-view": "1.0.1",
+  "peerDependencies": {
     "react": "0.14.5",
     "react-dom": "0.14.5"
+  },
+  "dependencies": {
+    "dom-scroll-into-view": "1.0.1"
   }
 }
