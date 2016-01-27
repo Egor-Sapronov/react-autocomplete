@@ -50,7 +50,8 @@ module.exports =
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	var React = __webpack_require__(1);
-	var scrollIntoView = __webpack_require__(2);
+	var findDOMNode = __webpack_require__(2).findDOMNode;
+	var scrollIntoView = __webpack_require__(3);
 
 	var _debugStates = [];
 
@@ -283,7 +284,7 @@ module.exports =
 	      this.setState({
 	        isOpen: false
 	      }, function () {
-	        React.findDOMNode(_this5.refs.input).select();
+	        findDOMNode(_this5.refs.input).select();
 	      });
 	    } else {
 	      var item = this.getFilteredItems()[this.state.highlightedIndex];
@@ -293,7 +294,7 @@ module.exports =
 	        highlightedIndex: null
 	      }, function () {
 	        //React.findDOMNode(this.refs.input).focus() // TODO: file issue
-	        React.findDOMNode(_this5.refs.input).setSelectionRange(_this5.state.value.length, _this5.state.value.length);
+	        findDOMNode(_this5.refs.input).setSelectionRange(_this5.state.value.length, _this5.state.value.length);
 	        _this5.props.onSelect(_this5.state.value, item);
 	      });
 	    }
@@ -398,16 +399,22 @@ module.exports =
 
 /***/ },
 /* 2 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	module.exports = __webpack_require__(3);
-
+	module.exports = require("react-dom");
 
 /***/ },
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var util = __webpack_require__(4);
+	module.exports = __webpack_require__(4);
+
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var util = __webpack_require__(5);
 
 	function scrollIntoView(elem, container, config) {
 	  config = config || {};
@@ -532,7 +539,7 @@ module.exports =
 
 
 /***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports) {
 
 	var RE_NUM = /[\-+]?(?:\d*\.|)\d+(?:[eE][\-+]?\d+|)/.source;
