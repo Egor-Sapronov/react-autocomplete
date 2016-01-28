@@ -279,6 +279,13 @@ module.exports =
 	    if (this.state.isOpen === false) {
 	      // already selected this, do nothing
 	      return;
+	    } else if (this.state.highlightedIndex == null) {
+	      // hit enter after focus but before typing anything so no autocomplete attempt yet
+	      this.setState({
+	        isOpen: false
+	      }, function () {
+	        findDOMNode(_this5.refs.input).select();
+	      });
 	    } else {
 	      var item = this.getFilteredItems()[this.state.highlightedIndex];
 	      this.setState({
