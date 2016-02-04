@@ -160,7 +160,7 @@ module.exports =
 	  },
 
 	  keyDownHandlers: {
-	    ArrowDown: function ArrowDown() {
+	    ArrowDown: function ArrowDown(event) {
 	      event.preventDefault();
 	      var highlightedIndex = this.state.highlightedIndex;
 
