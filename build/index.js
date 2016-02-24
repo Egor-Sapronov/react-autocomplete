@@ -335,10 +335,16 @@ module.exports =
 	  },
 
 	  handleInputBlur: function handleInputBlur() {
+	    var _this7 = this;
+
 	    if (this._ignoreBlur) return;
 	    this.setState({
 	      isOpen: false,
 	      highlightedIndex: null
+	    }, function () {
+	      if (_this7.props.onBlur) {
+	        _this7.props.onBlur();
+	      }
 	    });
 	  },
 
@@ -352,7 +358,7 @@ module.exports =
 	  },
 
 	  render: function render() {
-	    var _this7 = this;
+	    var _this8 = this;
 
 	    if (this.props.debug) {
 	      // you don't like it, you love it
@@ -371,13 +377,13 @@ module.exports =
 	        onFocus: this.handleInputFocus,
 	        onBlur: this.handleInputBlur,
 	        onChange: function (event) {
-	          return _this7.handleChange(event);
+	          return _this8.handleChange(event);
 	        },
 	        onKeyDown: function (event) {
-	          return _this7.handleKeyDown(event);
+	          return _this8.handleKeyDown(event);
 	        },
 	        onKeyUp: function (event) {
-	          return _this7.handleKeyUp(event);
+	          return _this8.handleKeyUp(event);
 	        },
 	        onClick: this.handleInputClick,
 	        value: this.state.value
