@@ -107,8 +107,11 @@ module.exports =
 	    this._performAutoCompleteOnKeyUp = false;
 	  },
 
-	  componentWillReceiveProps: function componentWillReceiveProps() {
+	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
 	    this._performAutoCompleteOnUpdate = true;
+	    this.setState({
+	      value: nextProps.value
+	    });
 	  },
 
 	  componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
