@@ -137,7 +137,7 @@ module.exports =
 
 	  handleHighLightedIndexChange: function handleHighLightedIndexChange() {
 	    if (this.props.handleHighLightedIndexChange) {
-	      this.props.handleHighLightedIndexChange(this.state.items[highlightedIndex]);
+	      this.props.handleHighLightedIndexChange(this.props.items[this.state.highlightedIndex]);
 	    }
 	  },
 
