@@ -296,8 +296,6 @@ module.exports =
 	        isOpen: false,
 	        highlightedIndex: 0
 	      }, function () {
-	        //React.findDOMNode(this.refs.input).focus() // TODO: file issue
-	        findDOMNode(_this5.refs.input).setSelectionRange(_this5.state.value.length, _this5.state.value.length);
 	        _this5.props.onSelect(_this5.state.value, item);
 	      });
 	    }
