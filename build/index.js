@@ -97,7 +97,7 @@ module.exports =
 	    return {
 	      value: this.props.initialValue || '',
 	      isOpen: false,
-	      highlightedIndex: null
+	      highlightedIndex: 0
 	    };
 	  },
 
