@@ -138,7 +138,7 @@ module.exports =
 	  handleKeyDown: function handleKeyDown(event) {
 	    if (this.keyDownHandlers[event.key]) this.keyDownHandlers[event.key].call(this, event);else {
 	      this.setState({
-	        highlightedIndex: null,
+	        highlightedIndex: 0,
 	        isOpen: true
 	      });
 	    }
@@ -197,7 +197,7 @@ module.exports =
 
 	    Escape: function Escape(event) {
 	      this.setState({
-	        highlightedIndex: null,
+	        highlightedIndex: 0,
 	        isOpen: false
 	      });
 	    }
@@ -268,7 +268,7 @@ module.exports =
 	    this.setState({
 	      value: this.props.getItemValue(item),
 	      isOpen: false,
-	      highlightedIndex: null
+	      highlightedIndex: 0
 	    }, function () {
 	      _this4.props.onSelect(_this4.state.value, item);
 	      _this4.refs.input.focus();
@@ -294,7 +294,7 @@ module.exports =
 	      this.setState({
 	        value: this.props.getItemValue(item),
 	        isOpen: false,
-	        highlightedIndex: null
+	        highlightedIndex: 0
 	      }, function () {
 	        //React.findDOMNode(this.refs.input).focus() // TODO: file issue
 	        findDOMNode(_this5.refs.input).setSelectionRange(_this5.state.value.length, _this5.state.value.length);
