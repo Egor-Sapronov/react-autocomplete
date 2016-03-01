@@ -340,7 +340,7 @@ module.exports =
 	    if (this._ignoreBlur) return;
 	    this.setState({
 	      isOpen: false,
-	      highlightedIndex: null
+	      highlightedIndex: 0
 	    }, function () {
 	      if (_this7.props.onBlur) {
 	        _this7.props.onBlur();
