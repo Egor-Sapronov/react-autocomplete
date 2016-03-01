@@ -128,7 +128,7 @@ module.exports =
 	  },
 
 	  maybeScrollItemIntoView: function maybeScrollItemIntoView() {
-	    if (this.state.isOpen === true && this.state.highlightedIndex !== null) {
+	    if (this.state.isOpen === true && this.state.highlightedIndex !== 0) {
 	      var itemNode = findDOMNode(this.refs['item-' + this.state.highlightedIndex]);
 	      var menuNode = findDOMNode(this.refs.menu);
 	      scrollIntoView(itemNode, menuNode, { onlyScrollIfNeeded: true });
