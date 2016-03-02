@@ -119,9 +119,6 @@ module.exports =
 
 	    if (this.state.isOpen && this._performAutoCompleteOnUpdate) {
 	      this._performAutoCompleteOnUpdate = false;
-	      if (this.props.isComplete) {
-	        this.maybeAutoCompleteText();
-	      }
 	    }
 
 	    this.maybeScrollItemIntoView();
@@ -164,7 +161,6 @@ module.exports =
 	  handleKeyUp: function handleKeyUp() {
 	    if (this._performAutoCompleteOnKeyUp) {
 	      this._performAutoCompleteOnKeyUp = false;
-	      this.maybeAutoCompleteText();
 	    }
 	  },
 
@@ -237,27 +233,6 @@ module.exports =
 	    return items;
 	  },
 
-	  maybeAutoCompleteText: function maybeAutoCompleteText() {
-	    var _this5 = this;
-
-	    if (this.state.value === '') return;
-	    var highlightedIndex = this.state.highlightedIndex;
-
-	    var items = this.getFilteredItems();
-	    if (items.length === 0) return;
-	    var matchedItem = highlightedIndex !== null ? items[highlightedIndex] : items[0];
-	    var itemValue = this.props.getItemValue(matchedItem);
-	    var itemValueDoesMatch = itemValue.toLowerCase().indexOf(this.state.value.toLowerCase()) === 0;
-	    if (itemValueDoesMatch) {
-	      var node = this.refs.input;
-	      var setSelection = function setSelection() {
-	        node.value = itemValue;
-	        node.setSelectionRange(_this5.state.value.length, itemValue.length);
-	      };
-	      if (highlightedIndex === null) this.setState({ highlightedIndex: 0 }, setSelection);else setSelection();
-	    }
-	  },
-
 	  setMenuPositions: function setMenuPositions() {
 	    var node = this.refs.input;
 	    var rect = node.getBoundingClientRect();
@@ -273,29 +248,29 @@ module.exports =
 	  },
 
 	  highlightItemFromMouse: function highlightItemFromMouse(index) {
-	    var _this6 = this;
+	    var _this5 = this;
 
 	    this.setState({ highlightedIndex: index }, function () {
-	      return _this6.handleHighLightedIndexChange();
+	      return _this5.handleHighLightedIndexChange();
 	    });
 	  },
 
 	  selectItemFromMouse: function selectItemFromMouse(item) {
-	    var _this7 = this;
+	    var _this6 = this;
 
 	    this.setState({
 	      value: this.props.getItemValue(item),
 	      isOpen: false,
 	      highlightedIndex: 0
 	    }, function () {
-	      _this7.props.onSelect(_this7.state.value, item);
-	      _this7.refs.input.focus();
-	      _this7.setIgnoreBlur(false);
+	      _this6.props.onSelect(_this6.state.value, item);
+	      _this6.refs.input.focus();
+	      _this6.setIgnoreBlur(false);
 	    });
 	  },
 
 	  selectItemFromKeyEvent: function selectItemFromKeyEvent(event) {
-	    var _this8 = this;
+	    var _this7 = this;
 
 	    if (this.state.isOpen === false) {
 	      // already selected this, do nothing
@@ -305,7 +280,7 @@ module.exports =
 	      this.setState({
 	        isOpen: false
 	      }, function () {
-	        findDOMNode(_this8.refs.input).select();
+	        findDOMNode(_this7.refs.input).select();
 	      });
 	    } else {
 	      var item = this.getFilteredItems()[this.state.highlightedIndex];
@@ -314,7 +289,7 @@ module.exports =
 	        isOpen: false,
 	        highlightedIndex: 0
 	      }, function () {
-	        _this8.props.onSelect(_this8.state.value, item);
+	        _this7.props.onSelect(_this7.state.value, item);
 	      });
 	    }
 	  },
@@ -324,19 +299,19 @@ module.exports =
 	  },
 
 	  renderMenu: function renderMenu() {
-	    var _this9 = this;
+	    var _this8 = this;
 
 	    var items = this.getFilteredItems().map(function (item, index) {
-	      var element = _this9.props.renderItem(item, _this9.state.highlightedIndex === index, { cursor: 'default' });
+	      var element = _this8.props.renderItem(item, _this8.state.highlightedIndex === index, { cursor: 'default' });
 	      return React.cloneElement(element, {
 	        onMouseDown: function onMouseDown() {
-	          return _this9.setIgnoreBlur(true);
+	          return _this8.setIgnoreBlur(true);
 	        },
 	        onMouseEnter: function onMouseEnter() {
-	          return _this9.highlightItemFromMouse(index);
+	          return _this8.highlightItemFromMouse(index);
 	        },
 	        onClick: function onClick() {
-	          return _this9.selectItemFromMouse(item);
+	          return _this8.selectItemFromMouse(item);
 	        },
 	        ref: 'item-' + index
 	      });
@@ -351,15 +326,15 @@ module.exports =
 	  },
 
 	  handleInputBlur: function handleInputBlur() {
-	    var _this10 = this;
+	    var _this9 = this;
 
 	    if (this._ignoreBlur) return;
 	    this.setState({
 	      isOpen: false,
 	      highlightedIndex: 0
 	    }, function () {
-	      if (_this10.props.onBlur) {
-	        _this10.props.onBlur();
+	      if (_this9.props.onBlur) {
+	        _this9.props.onBlur();
 	      }
 	    });
 	  },
@@ -374,7 +349,7 @@ module.exports =
 	  },
 
 	  render: function render() {
-	    var _this11 = this;
+	    var _this10 = this;
 
 	    if (this.props.debug) {
 	      // you don't like it, you love it
@@ -393,13 +368,13 @@ module.exports =
 	        onFocus: this.handleInputFocus,
 	        onBlur: this.handleInputBlur,
 	        onChange: function (event) {
-	          return _this11.handleChange(event);
+	          return _this10.handleChange(event);
 	        },
 	        onKeyDown: function (event) {
-	          return _this11.handleKeyDown(event);
+	          return _this10.handleKeyDown(event);
 	        },
 	        onKeyUp: function (event) {
-	          return _this11.handleKeyUp(event);
+	          return _this10.handleKeyUp(event);
 	        },
 	        onClick: this.handleInputClick,
 	        value: this.state.value
